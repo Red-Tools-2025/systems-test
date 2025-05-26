@@ -21,16 +21,16 @@ export default function InventoryPage() {
   const [employee] = useAtom(employeeAtom);
   const { inventory, loading, error } = useInventory(employee?.store_id);
 
-  if (!employee) {
-    window.location.href = "/login";
-    return null;
-  }
+  // if (!employee) {
+  //   window.location.href = "/login";
+  //   return null;
+  // }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted font-[family-name:var(--font-geist-sans)]">
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle>Inventory for Store #{employee.store_id}</CardTitle>
+          <CardTitle>Inventory for Store #{employee?.store_id}</CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (

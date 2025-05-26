@@ -30,11 +30,7 @@ export default function POSPage() {
   // For quantity input
   const [quantities, setQuantities] = useState<Record<number, number>>({});
 
-  useEffect(() => {
-    if (!employee) router.replace("/login");
-  }, [employee, router]);
-
-  if (!employee) return null;
+  if (!employee) return <p>Login in again</p>;
 
   // Add to cart logic
   function addToCart(itemId: number) {
