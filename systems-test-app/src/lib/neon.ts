@@ -1,8 +1,13 @@
 import { Pool } from "pg";
 
+const getPgConnectionString = () => {
+  if (process.env.DATABASE_URL) {
+    return process.env.DATABASE_URL;
+  }
+  throw new Error("DATABASE_URL env is not defined");
+};
 const pool = new Pool({
-  connectionString:
-    "postgresql://neondb_owner:npg_UI2ASRQeO3aK@ep-billowing-sunset-a8jhvizk-pooler.eastus2.azure.neon.tech/neondb?sslmode=require",
+  connectionString: getPgConnectionString(),
 });
 
 export { pool };
