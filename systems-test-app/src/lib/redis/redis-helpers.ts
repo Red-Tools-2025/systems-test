@@ -30,3 +30,5 @@ const cacheMissProtocall = async (store_id: number, cache_key: string) => {
   console.log("Data from database was retrieved");
   return store_inv_data;
 };
+
+export { cacheMissProtocall };

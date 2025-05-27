@@ -1,11 +1,14 @@
 // app/api/inventory/route.ts
-import { pool } from "@/lib/neon";
 import { NextRequest, NextResponse } from "next/server";
+import { cacheMissProtocall } from "@/lib/redis/redis-helpers";
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const storeId = searchParams.get("store_id");
+
+    // Define store cache-key, Later retrieve from database
+    const cache_key = `inv_cache#${storeId}`;
 
     if (!storeId) {
       return NextResponse.json(
@@ -14,12 +17,10 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const result = await pool.query(
-      "SELECT id, product_name, quantity, price FROM inventory WHERE store_id = $1",
-      [storeId]
-    );
+    // Cache OR PG retrieval
+    const result = await cacheMissProtocall(Number(storeId), cache_key);
 
-    return NextResponse.json({ inventory: result.rows });
+    return NextResponse.json({ inventory: result });
   } catch (error) {
     console.error("Inventory fetch error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
