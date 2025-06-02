@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const storeId = searchParams.get("store_id");
 
     // Define store cache-key, Later retrieve from database
-    const cache_key = `inv_cache#${storeId}`;
+    const cache_key = `inv_products:${storeId}`;
 
     if (!storeId) {
       return NextResponse.json(
