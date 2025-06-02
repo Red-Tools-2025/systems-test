@@ -72,4 +72,4 @@ const cacheMissProtocallV2 = async (store_id: number, cache_key: string) => {
   return store_inv_data;
 };
 
-export { cacheMissProtocall };
+export { cacheMissProtocall, cacheMissProtocallV2 };

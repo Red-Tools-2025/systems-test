@@ -1,6 +1,6 @@
 // app/api/inventory/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { cacheMissProtocall } from "@/lib/redis/redis-helpers";
+import { cacheMissProtocallV2 } from "@/lib/redis/redis-helpers";
 
 export async function GET(req: NextRequest) {
   try {
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Cache OR PG retrieval
-    const result = await cacheMissProtocall(Number(storeId), cache_key);
+    const result = await cacheMissProtocallV2(Number(storeId), cache_key);
 
     return NextResponse.json({ inventory: result });
   } catch (error) {
