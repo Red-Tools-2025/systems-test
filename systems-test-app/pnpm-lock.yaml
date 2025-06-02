@@ -8,6 +8,9 @@ dependencies:
   '@radix-ui/react-slot':
     specifier: ^1.2.3
     version: 1.2.3(@types/react@19.1.5)(react@19.1.0)
+  '@redis/json':
+    specifier: ^5.1.1
+    version: 5.1.1(@redis/client@5.1.1)
   class-variance-authority:
     specifier: ^0.7.1
     version: 0.7.1
@@ -595,6 +598,22 @@ packages:
       '@radix-ui/react-compose-refs': 1.1.2(@types/react@19.1.5)(react@19.1.0)
       '@types/react': 19.1.5
       react: 19.1.0
+    dev: false
+
+  /@redis/client@5.1.1:
+    resolution: {integrity: sha512-vojbBqUdbkD+ylCy3+ZDXLzSmgiYH9pLrv87kF+nDgsRaHKrVVxPV9B4u6EfWRx7XGvQGZqsXVkKFhsEOsG3LA==}
+    engines: {node: '>= 18'}
+    dependencies:
+      cluster-key-slot: 1.1.2
+    dev: false
+
+  /@redis/json@5.1.1(@redis/client@5.1.1):
+    resolution: {integrity: sha512-A5M0dcgxGKq+oE6spIPBcGLDBiwoSPTs2wesVb4x30rXfG6rPtqt1Z7fCMtvTL2kHUNRKgZ78zhD+0+MENZt7g==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.1.1
+    dependencies:
+      '@redis/client': 5.1.1
     dev: false
 
   /@rtsao/scc@1.1.0:
