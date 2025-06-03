@@ -1,6 +1,5 @@
 import { redis } from "@/lib/redis/redis";
-import { error } from "console";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,7 +8,7 @@ export async function POST(req: NextRequest) {
     const storeId = searchParams.get("storeId");
 
     if (!storeId) {
-      return new Error("Missing store ID");
+      return new Response("Missing store ID", { status: 400 });
     }
 
     // Define channel name
@@ -39,13 +38,13 @@ export async function POST(req: NextRequest) {
 
     return new Response(stream, {
       headers: {
-        "Content-Type": "text/stream-event",
+        "Content-Type": "text/event-stream",
         Connection: "keep-alive",
         "Cache-Control": "no-cache",
       },
     });
   } catch (err) {
-    console.log(error);
-    return NextResponse.json({ error: err }, { status: 500 });
+    console.log(err);
+    return new Response("Internal Server Error", { status: 500 });
   }
 }
