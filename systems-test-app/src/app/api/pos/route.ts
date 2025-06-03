@@ -1,5 +1,4 @@
 import { redis } from "@/lib/redis/redis";
-import { splitAtom } from "jotai/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Sale {
@@ -70,6 +69,17 @@ export async function POST(req: NextRequest) {
 
       // Push Updates to update pipeline
       updatePipeline.set(`${cache_key}:${pid}`, JSON.stringify(product));
+
+      // Log sale update to Redis update queue
+      updatePipeline.rpush(
+        `update_queue:${storeId}`,
+        JSON.stringify({
+          p_id: Number(pid),
+          delta: -sale.quantity,
+          timestamp: Date.now(),
+          store_id: storeId,
+        })
+      );
     });
 
     await updatePipeline.exec();
