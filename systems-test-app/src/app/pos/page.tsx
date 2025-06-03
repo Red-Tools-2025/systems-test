@@ -27,6 +27,7 @@ export default function POSPage() {
   const { inventory, loading, error } = useInventory(employee?.store_id);
   const {
     updateCacheAndQueue,
+    salesEventSource,
     cacheUpdateError,
     cacheUpdateLoading,
     cacheUpdateSuccess,

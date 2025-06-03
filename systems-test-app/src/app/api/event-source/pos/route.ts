@@ -1,7 +1,7 @@
 import { redis } from "@/lib/redis/redis";
 import { NextRequest } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
     // Collect Store Id from params
     const { searchParams } = new URL(req.url);
@@ -20,7 +20,17 @@ export async function POST(req: NextRequest) {
       // We define a controller at the start responsible for creating a new line to subscribe to the channel
       async start(controller) {
         subscribe = redis.duplicate();
-        await subscribe.connect();
+        if (subscribe.status === "end" || subscribe.status === "close") {
+          await subscribe.connect();
+        } else if (subscribe.status === "connecting") {
+          // Wait for connection to complete
+          await new Promise((resolve, reject) => {
+            subscribe.once("ready", resolve);
+            subscribe.once("error", reject);
+          });
+        } else if (subscribe.status !== "ready") {
+          await subscribe.connect();
+        }
         // Subscribe to the channel name
         // On every incomming message stream it, *-- Defined as JSON in publisher
         await subscribe.subscribe(`${channel}`, (message: string) => {
