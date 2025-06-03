@@ -80,6 +80,19 @@ export async function POST(req: NextRequest) {
           store_id: storeId,
         })
       );
+
+      // Notify for sales to all subscribers to channel
+      sales.forEach((sale) => {
+        redis.publish(
+          `pos:updates:${storeId}`,
+          JSON.stringify({
+            p_id: sale.p_id,
+            delta: -sale.quantity,
+            timestamp: Date.now(),
+            storeId: storeId,
+          })
+        );
+      });
     });
 
     await updatePipeline.exec();
