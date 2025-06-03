@@ -202,8 +202,11 @@ export default function POSPage() {
                 <span className="font-bold">${cartTotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-end mt-4">
-                <Button onClick={handleSell} disabled={cart.length === 0}>
-                  Sell
+                <Button
+                  onClick={handleSell}
+                  disabled={cart.length === 0 || cacheUpdateLoading}
+                >
+                  {cacheUpdateLoading ? "Processing..." : "Sell"}
                 </Button>
               </div>
             </>
