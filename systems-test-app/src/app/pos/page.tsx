@@ -2,7 +2,6 @@
 
 import { useAtom } from "jotai";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { employeeAtom } from "@/atoms/auth";
 import { cartAtom } from "@/atoms/cart";
 import { useInventory } from "@/hooks/useInventory";
@@ -20,12 +19,18 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCache } from "@/hooks/useCache";
 
 export default function POSPage() {
   const [employee] = useAtom(employeeAtom);
   const [cart, setCart] = useAtom(cartAtom);
-  const router = useRouter();
   const { inventory, loading, error } = useInventory(employee?.store_id);
+  const {
+    updateCacheAndQueue,
+    cacheUpdateError,
+    cacheUpdateLoading,
+    cacheUpdateSuccess,
+  } = useCache();
 
   // For quantity input
   const [quantities, setQuantities] = useState<Record<number, number>>({});
@@ -59,11 +64,16 @@ export default function POSPage() {
   }
 
   // Handle "Sell" action
+
   function handleSell() {
     if (cart.length === 0) return;
-    console.log("SOLD:", cart);
-    setCart([]);
-    alert("Sale complete! (Check console for cart data)");
+
+    const sales = cart.map((item) => ({
+      p_id: item.id,
+      quantity: item.quantity,
+    }));
+
+    updateCacheAndQueue(sales);
   }
 
   // Cart total

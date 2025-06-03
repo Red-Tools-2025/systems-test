@@ -10,21 +10,21 @@ interface SalePayload {
 }
 
 export function useCache() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [cacheUpdateLoading, setCacheUpdateLoading] = useState(false);
+  const [cacheUpdateError, setCacheUpdateError] = useState<string | null>(null);
+  const [cacheUpdateSuccess, setcacheUpdateSuccess] = useState(false);
   const [employee] = useAtom(employeeAtom);
   const [, setCart] = useAtom(cartAtom);
 
   async function updateCacheAndQueue(sales: SalePayload[]) {
     if (!employee?.store_id) {
-      setError("Missing store information");
+      setCacheUpdateError("Missing store information");
       return;
     }
 
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
+    setCacheUpdateLoading(true);
+    setCacheUpdateError(null);
+    setcacheUpdateSuccess(false);
 
     try {
       const res = await fetch("/api/pos/cache-update", {
@@ -39,23 +39,23 @@ export function useCache() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Failed to update cache");
+        setCacheUpdateError(data.cacheUpdateError || "Failed to update cache");
         return;
       }
 
-      setSuccess(true);
-      setCart([]); // Clear cart on success
+      setcacheUpdateSuccess(true);
+      setCart([]); // Clear cart on cacheUpdateSuccess
     } catch (err) {
-      setError("Network error while updating cache");
+      setCacheUpdateError("Network cacheUpdateError while updating cache");
     } finally {
-      setLoading(false);
+      setCacheUpdateLoading(false);
     }
   }
 
   return {
     updateCacheAndQueue,
-    loading,
-    error,
-    success,
+    cacheUpdateLoading,
+    cacheUpdateError,
+    cacheUpdateSuccess,
   };
 }
