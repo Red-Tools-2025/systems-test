@@ -38,6 +38,9 @@ dependencies:
   react-dom:
     specifier: ^19.0.0
     version: 19.1.0(react@19.1.0)
+  redis:
+    specifier: ^5.1.1
+    version: 5.1.1
   tailwind-merge:
     specifier: ^3.3.0
     version: 3.3.0
@@ -600,6 +603,15 @@ packages:
       react: 19.1.0
     dev: false
 
+  /@redis/bloom@5.1.1(@redis/client@5.1.1):
+    resolution: {integrity: sha512-PnMcvpL7O2DHtnSL5JtyNmraNrdHuJXi3u2isGTUuPgkbAuWQKfZdknq471ySILL+qKtLfVJqzgDFMjYmZzK6Q==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.1.1
+    dependencies:
+      '@redis/client': 5.1.1
+    dev: false
+
   /@redis/client@5.1.1:
     resolution: {integrity: sha512-vojbBqUdbkD+ylCy3+ZDXLzSmgiYH9pLrv87kF+nDgsRaHKrVVxPV9B4u6EfWRx7XGvQGZqsXVkKFhsEOsG3LA==}
     engines: {node: '>= 18'}
@@ -609,6 +621,24 @@ packages:
 
   /@redis/json@5.1.1(@redis/client@5.1.1):
     resolution: {integrity: sha512-A5M0dcgxGKq+oE6spIPBcGLDBiwoSPTs2wesVb4x30rXfG6rPtqt1Z7fCMtvTL2kHUNRKgZ78zhD+0+MENZt7g==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.1.1
+    dependencies:
+      '@redis/client': 5.1.1
+    dev: false
+
+  /@redis/search@5.1.1(@redis/client@5.1.1):
+    resolution: {integrity: sha512-bChudQmcqfYUxEGMeXMkljXtwse4hzqcqRwbZDwRyYe+EEeW/lXVl3w/mS2tHnAb2yqGnfDghid8iHEtVNqjww==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@redis/client': ^5.1.1
+    dependencies:
+      '@redis/client': 5.1.1
+    dev: false
+
+  /@redis/time-series@5.1.1(@redis/client@5.1.1):
+    resolution: {integrity: sha512-HPjZLfcZxh5mBLqRgx7KCZG6JXxGnb7yJqo9qZ/KMTWK/k3SWyH47DHJbYbRNzKOEkbK/l/5kikDTm79uJuCbg==}
     engines: {node: '>= 18'}
     peerDependencies:
       '@redis/client': ^5.1.1
@@ -3098,6 +3128,17 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       redis-errors: 1.2.0
+    dev: false
+
+  /redis@5.1.1:
+    resolution: {integrity: sha512-4t6n2Q9aFqpQnqBR/g84zsXW+U0hdSzYymqoGGZk44p+kuzzHbgukjOAca+PlQ563TbXcgv1njerllYWjAWw4g==}
+    engines: {node: '>= 18'}
+    dependencies:
+      '@redis/bloom': 5.1.1(@redis/client@5.1.1)
+      '@redis/client': 5.1.1
+      '@redis/json': 5.1.1(@redis/client@5.1.1)
+      '@redis/search': 5.1.1(@redis/client@5.1.1)
+      '@redis/time-series': 5.1.1(@redis/client@5.1.1)
     dev: false
 
   /reflect.getprototypeof@1.0.10:

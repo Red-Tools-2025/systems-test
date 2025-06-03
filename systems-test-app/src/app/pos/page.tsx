@@ -1,10 +1,10 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { employeeAtom } from "@/atoms/auth";
-import { cartAtom, CartItem } from "@/atoms/cart";
+import { cartAtom } from "@/atoms/cart";
 import { useInventory } from "@/hooks/useInventory";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
