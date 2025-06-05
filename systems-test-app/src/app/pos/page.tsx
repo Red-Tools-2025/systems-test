@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { employeeAtom } from "@/atoms/auth";
 import { cartAtom } from "@/atoms/cart";
 import { useInventory } from "@/hooks/useInventory";
@@ -20,23 +20,31 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCache } from "@/hooks/useCache";
+import { Inventory } from "@/types/db";
 
 export default function POSPage() {
   const [employee] = useAtom(employeeAtom);
   const [cart, setCart] = useAtom(cartAtom);
-  const { inventory, loading, error } = useInventory(employee?.store_id);
   const {
-    updateCacheAndQueue,
-    salesEventSource,
-    cacheUpdateError,
-    cacheUpdateLoading,
-    cacheUpdateSuccess,
-  } = useCache();
+    inventory: serverInventory,
+    loading,
+    error,
+  } = useInventory(employee?.store_id);
+  const { updateCacheAndQueue, cacheUpdateLoading } = useCache();
 
   // For quantity input
   const [quantities, setQuantities] = useState<Record<number, number>>({});
+  // For inventory updates and streams
+  const [inventory, setInventory] = useState<Inventory[]>(
+    serverInventory || []
+  );
 
-  if (!employee) return <p>Login in again</p>;
+  // for populating inventory
+  useEffect(() => {
+    if (serverInventory) {
+      setInventory(serverInventory);
+    }
+  }, [serverInventory]);
 
   // Add to cart logic
   function addToCart(itemId: number) {
@@ -88,9 +96,9 @@ export default function POSPage() {
       <Card className="w-full max-w-4xl mb-8">
         <CardHeader>
           <CardTitle>
-            POS - Store #{employee.store_id}{" "}
+            POS - Store #{employee?.store_id ?? "N/A"}{" "}
             <Badge variant="secondary" className="ml-2">
-              {employee.employee_name}
+              {employee?.employee_name ?? "Unknown"}
             </Badge>
           </CardTitle>
         </CardHeader>

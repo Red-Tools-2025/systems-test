@@ -83,6 +83,7 @@ export async function POST(req: NextRequest) {
 
       // Notify for sales to all subscribers to channel
       sales.forEach((sale) => {
+        console.log(`published update for: ${sale.p_id}`);
         redis.publish(
           `pos:updates:${storeId}`,
           JSON.stringify({

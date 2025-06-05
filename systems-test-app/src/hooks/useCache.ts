@@ -65,32 +65,14 @@ export function useCache() {
     const source = new EventSource(
       `/api/event-source/pos?storeId=${employee.store_id}`
     );
-    setSalesEventSource(source);
 
-    source.onopen = () => {
-      console.log("SSE connection opened");
-    };
-
-    source.onmessage = (event) => {
-      try {
-        const update = JSON.parse(event.data);
-        console.log("Received update via SSE:", update);
-      } catch (err) {
-        console.error("Failed to parse SSE message:", err);
-      }
-    };
-
-    source.onerror = (event) => {
-      console.error("EventSource error:", event);
-      // Don't immediately close - let it retry
-      if (source.readyState === EventSource.CLOSED) {
-        setSalesEventSource(null);
-      }
-    };
+    source.addEventListener("message", (event) => {
+      const data = JSON.parse(event.data);
+      console.log(`Latest Subscribed: ${data}`);
+    });
 
     return () => {
       source.close();
-      setSalesEventSource(null);
     };
   }, [employee?.store_id]);
 
