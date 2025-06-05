@@ -9,4 +9,7 @@ const getRedisURL = () => {
 };
 
 // Initializing redis instance
-export const redis = new Redis(getRedisURL());
+export const redis = new Redis({
+  host: "localhost",
+  port: 6379,
+});

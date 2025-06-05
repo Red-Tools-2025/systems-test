@@ -59,22 +59,6 @@ export function useCache() {
 
   // Declaring an event source
   // Set up SSE connection once on mount
-  useEffect(() => {
-    if (!employee?.store_id) return;
-
-    const source = new EventSource(
-      `/api/event-source/pos?storeId=${employee.store_id}`
-    );
-
-    source.addEventListener("message", (event) => {
-      const data = JSON.parse(event.data);
-      console.log(`Latest Subscribed: ${data}`);
-    });
-
-    return () => {
-      source.close();
-    };
-  }, [employee?.store_id]);
 
   return {
     updateCacheAndQueue,

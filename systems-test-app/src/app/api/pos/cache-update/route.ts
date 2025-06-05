@@ -80,20 +80,20 @@ export async function POST(req: NextRequest) {
           store_id: storeId,
         })
       );
+    });
 
-      // Notify for sales to all subscribers to channel
-      sales.forEach((sale) => {
-        console.log(`published update for: ${sale.p_id}`);
-        redis.publish(
-          `pos:updates:${storeId}`,
-          JSON.stringify({
-            p_id: sale.p_id,
-            delta: -sale.quantity,
-            timestamp: Date.now(),
-            storeId: storeId,
-          })
-        );
-      });
+    // Notify for sales to all subscribers to channel
+    sales.forEach((sale) => {
+      console.log(`published update for: ${sale.p_id}`);
+      redis.publish(
+        `pos:updates:${storeId}`,
+        JSON.stringify({
+          p_id: sale.p_id,
+          delta: -sale.quantity,
+          timestamp: Date.now(),
+          storeId: storeId,
+        })
+      );
     });
 
     await updatePipeline.exec();
