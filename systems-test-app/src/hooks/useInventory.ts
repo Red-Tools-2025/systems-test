@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import type { Inventory } from "@/types/db";
 import { employeeAtom } from "@/atoms/auth";
 import { useAtom } from "jotai";
+import useTypeGaurds from "./useTypeGaurds";
 
 export function useInventory(storeId?: number) {
+  const { isValidSaleEvent } = useTypeGaurds();
   const [employee] = useAtom(employeeAtom);
   const [inventory, setInventory] = useState<Inventory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,6 +36,20 @@ export function useInventory(storeId?: number) {
       `/api/event-source/pos?storeId=${employee.store_id}`
     );
 
+    source.addEventListener("message", (event) => {
+      const sales_event = JSON.parse(event.data);
+      // Validate incomming type to sales event type
+      if (isValidSaleEvent(sales_event) && sales_event) {
+        // apply updates on the current inventory
+        setInventory((prev) =>
+          prev.map((item) =>
+            item.id === sales_event.p_id
+              ? { ...item, quantity: item.quantity + sales_event.delta }
+              : item
+          )
+        );
+      }
+    });
     return () => {
       source.close();
     };

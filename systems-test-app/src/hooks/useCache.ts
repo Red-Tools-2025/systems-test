@@ -1,6 +1,6 @@
 // src/hooks/useCache.ts
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAtom } from "jotai";
 import { cartAtom } from "@/atoms/cart";
 import { employeeAtom } from "@/atoms/auth";
@@ -14,9 +14,6 @@ export function useCache() {
   const [cacheUpdateLoading, setCacheUpdateLoading] = useState(false);
   const [cacheUpdateError, setCacheUpdateError] = useState<string | null>(null);
   const [cacheUpdateSuccess, setcacheUpdateSuccess] = useState(false);
-  const [salesEventSource, setSalesEventSource] = useState<EventSource | null>(
-    null
-  );
   const [employee] = useAtom(employeeAtom);
   const [, setCart] = useAtom(cartAtom);
 
@@ -57,12 +54,8 @@ export function useCache() {
     }
   }
 
-  // Declaring an event source
-  // Set up SSE connection once on mount
-
   return {
     updateCacheAndQueue,
-    salesEventSource,
     cacheUpdateLoading,
     cacheUpdateError,
     cacheUpdateSuccess,

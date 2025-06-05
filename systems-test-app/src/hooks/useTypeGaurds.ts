@@ -1,9 +1,4 @@
-type SaleEvent = {
-  p_id: number;
-  delta: number;
-  timestamp: number;
-  storeId: number;
-};
+import { SaleEvent } from "@/types/events";
 
 const useTypeGaurds = () => {
   const isValidSaleEvent = (obj: any): obj is SaleEvent => {
@@ -19,3 +14,5 @@ const useTypeGaurds = () => {
 
   return { isValidSaleEvent };
 };
+
+export default useTypeGaurds;
